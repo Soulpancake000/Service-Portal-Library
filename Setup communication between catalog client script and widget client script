@@ -1,0 +1,17 @@
+The requirement is to open a modal window in Service Portal on the basis of steps which are defined in Catalog Client Script. If we are working with Catalog Items, GlideDialogWindow will work for standard form only. To make it work for Servie Portal, we need to use CustomEvent.fire and CustomEvent.observe. 
+
+CustomEvent.fire in the catalog client script to send the message to the widget. CustomEvent.observe in the widget client controller to receive the message and perform the desired action.  
+
+UI Type: All 
+
+Type: onChange 
+
+Catalog Item: Name of your Catalog Item 
+
+Variable Name: Any variable
+
+function onChange(control, oldValue, newValue, isLoading) { if (isLoading || newValue == '') { return; } CustomEvent.fire('show.alert'); }
+
+Client Controller of Widget:
+
+function($uibModal, $scope) { var c = this; CustomEvent.observe('show.alert',function Alert(){c.ShowAlert(); }); c.ShowAlert = function() { c.modalInstance = $uibModal.open({templateUrl:'modalTemplate',sope:$scope});} c.close=function(){c.modalInstance.close()}}
